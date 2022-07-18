@@ -9,9 +9,12 @@ class Layer_Dropout:
         self.rate = 1 - rate
         
     # Forward pass
-    def forward(self, inputs):
+    def forward(self, inputs,training):
         # Save input values
         self.inputs = inputs
+        if not training:
+            self.output = inputs.copy()
+            return
         # Generate and save scaled mask
         self.binary_mask = np.random.binomial(1, self.rate,
                                               size=inputs.shape) / self.rate

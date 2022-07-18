@@ -5,7 +5,7 @@ import numpy as np
 
 class Activation_Sigmoid:
     # Forward pass
-    def forward(self, inputs):
+    def forward(self, inputs,training):
         # Save input and calculate/save output
         # of the sigmoid function
         self.inputs = inputs
@@ -15,3 +15,6 @@ class Activation_Sigmoid:
     def backward(self, dvalues):
         # Derivative - calculates from output of the sigmoid function
         self.dinputs = dvalues * (1 - self.output) * self.output
+
+    def predictions(self,outputs):
+        return (outputs > 0.5) * 1

@@ -9,10 +9,9 @@ class Layer_Dense:
         self.bias_regularizer_l1 = bias_regularizer_l1
         self.bias_regularizer_l2 = bias_regularizer_l2
 
-    def forward(self,inputs):
+    def forward(self,inputs,training):
         self.inputs = inputs
         self.output = np.dot(inputs,self.weights) + self.biases
-        pass
 
     def backward(self,dvalues):
         self.dweights = np.dot(self.inputs.T,dvalues)
