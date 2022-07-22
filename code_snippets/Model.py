@@ -3,6 +3,7 @@ from Layer_Input import Layer_Input
 from Activation_Softmax import Activation_Softmax
 from Activation_Softmax_Loss_CategoricalCrossentropy import Activation_Softmax_Loss_CategoricalCrossentropy
 from Loss_CategoricalCrossentropy import Loss_CategoricalCrossentropy
+import numpy as np
 import pickle
 import copy
 # Model class
@@ -197,6 +198,21 @@ class Model:
               f'acc: {validation_accuracy:.3f}, ' +
               f'loss: {validation_loss:.3f}')
 
+    def predict(self, X, *, batch_size=None):
+        prediction_steps = 1
+        if batch_size is not None:
+            prediction_steps = len(X) // batch_size
+            if prediction_steps * batch_size < len(X):
+                prediction_steps += 1
+
+        output = []
+        for step in range(prediction_steps):
+            batch_X = X if batch_size is None else X[step*batch_size:(step+1)*batch_size]
+            batch_output = self.forward(batch_X,training=False)
+            output.append(batch_output)
+
+        return np.vstack(output)
+        
     # Performs forward pass
     def forward(self, X, training):
 
@@ -268,7 +284,7 @@ class Model:
         with open(path, 'rb') as f:
             self.set_parameters(pickle.load(f))
 
-    def save(self,path):
+    def save(self, path):
         model = copy.deepcopy(self)
         model.loss.new_pass()
         model.accuracy.new_pass()
@@ -277,14 +293,13 @@ class Model:
         for layer in model.layers:
             for property in ['inputs', 'outputs', 'dinputs', 'dweights', 'dbiases']:
                 layer.__dict__.pop(property, None)
-        
+
         with open(path, 'wb') as f:
             pickle.dump(model, f)
 
     @staticmethod
     def load(path):
-        with open(path,'rb') as f:
+        with open(path, 'rb') as f:
             model = pickle.load(f)
 
         return model
-
