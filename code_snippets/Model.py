@@ -94,7 +94,7 @@ class Model:
 
     # Train the model
     def train(self, X, y, *, epochs=1, batch_size=None, print_every=1,
-              validation_data=None):
+              validation_data=None,callback=None):
 
         # Initialize accuracy object
         self.accuracy.init(y)
@@ -121,7 +121,8 @@ class Model:
 
                 # Perform the forward pass
                 output = self.forward(batch_X, training=True)
-
+                if callback is not None:
+                    callback(output)
                 # Calculate loss
                 data_loss, regularization_loss = \
                     self.loss.calculate(output, batch_y,
