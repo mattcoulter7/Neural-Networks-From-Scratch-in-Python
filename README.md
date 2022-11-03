@@ -1,5 +1,5 @@
 # Neural Networks from Scratch in Python
-This repository contains all the code that has been created as I have studied [Harrison Kinsley's Neural Networks From Scratch in Python Textbook](nnfs.io). 
+This repository contains all the code that has been created as I have studied [Harrison Kinsley's Neural Networks From Scratch in Python Textbook](https://nnfs.io/). 
 
 ## Dependencies
 - nnfs
